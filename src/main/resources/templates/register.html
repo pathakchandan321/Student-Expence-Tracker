@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Create Account</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body class="auth-body"><main class="auth-page"><h1>Student Budget Management</h1><section class="form-card"><h2>Create Account</h2><p class="error" th:if="${error}" th:text="${error}"></p>
+    <form th:action="@{/register}" th:object="${form}" method="post" class="auth-form"><label>Username<input th:field="*{username}" minlength="3" required></label><label>Password<input type="password" th:field="*{password}" minlength="6" required></label><label>Confirm Password<input type="password" th:field="*{confirmPassword}" minlength="6" required></label><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button type="submit">Create Account</button></form>
+    <p>Already registered? <a th:href="@{/login}">Login</a></p>
+</section></main></body></html>

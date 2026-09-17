@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Budget Settings</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><header><h1>Student Budget Management</h1><div th:replace="~{fragments :: nav}"></div></header>
+<main class="form-page"><h2>Budget Settings</h2><p class="subtitle">Add or update a monthly budget.</p>
+<form th:action="@{/budget}" th:object="${budget}" method="post" class="form-card">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <label>Month<input type="month" th:field="*{month}" required></label>
+    <label>Budget Amount (₹)<input type="number" th:field="*{budget}" min="0" step="0.01" required></label>
+    <button type="submit">Save Budget</button>
+</form></main></body></html>

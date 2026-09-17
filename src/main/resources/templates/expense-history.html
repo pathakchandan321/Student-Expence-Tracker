@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Expense History</title><link rel="stylesheet" th:href="@{/css/style.css}"><script th:src="@{/js/app.js}" defer></script></head>
+<body><header><h1>Student Budget Management</h1><div th:replace="~{fragments :: nav}"></div></header>
+<main><div class="page-title"><div><h2>Expense History</h2><p class="subtitle" th:text="'Expenses for ' + ${month}"></p></div><a class="button" th:href="@{/expenses/add}">+ Add Expense</a></div>
+<form class="month-picker" method="get"><label>View month <input type="month" name="month" th:value="${month}"></label><button>View</button></form>
+<div class="table-box"><table><thead><tr><th>Date</th><th>Category</th><th>Note</th><th>Amount</th><th>Action</th></tr></thead><tbody>
+<tr th:each="expense : ${expenses}"><td th:text="${expense.date}"></td><td th:text="${expense.category}"></td><td th:text="${expense.note}"></td><td th:text="'₹' + ${expense.amount}"></td><td><form th:action="@{/expenses/{id}/delete(id=${expense.id})}" method="post" class="delete-form"><input type="hidden" name="month" th:value="${month}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="delete" type="submit">Delete</button></form></td></tr>
+<tr th:if="${#lists.isEmpty(expenses)}"><td colspan="5" class="no-data">No expenses added for this month.</td></tr>
+</tbody></table></div></main></body></html>

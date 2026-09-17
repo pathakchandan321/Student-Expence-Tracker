@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Add Expense</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><header><h1>Student Budget Management</h1><div th:replace="~{fragments :: nav}"></div></header>
+<main class="form-page"><h2>Add Expense</h2><p class="subtitle">Record what you spent today.</p>
+<form th:action="@{/expenses}" th:object="${expense}" method="post" class="form-card">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <label>Amount (₹)<input type="number" th:field="*{amount}" min="0.01" step="0.01" required></label>
+    <label>Category<select th:field="*{category}" required><option value="">Choose a category</option><option th:each="item : ${categories}" th:value="${item}" th:text="${item}"></option></select></label>
+    <label>Date<input type="date" th:field="*{date}" required></label>
+    <label>Note (optional)<textarea th:field="*{note}" maxlength="250" placeholder="For example: dinner with friends"></textarea></label>
+    <button type="submit">Add Expense</button>
+</form></main></body></html>

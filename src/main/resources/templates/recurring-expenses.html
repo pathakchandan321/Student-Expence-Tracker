@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Recurring Expenses</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><header><h1>Student Budget Management</h1><div th:replace="~{fragments :: nav}"></div></header>
+<main class="form-page"><h2>Recurring Expenses</h2><p class="subtitle">These are counted automatically in every month’s total spent.</p>
+<form th:action="@{/recurring}" th:object="${recurring}" method="post" class="form-card">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <label>Category<select th:field="*{category}" required><option value="">Choose a category</option><option th:each="item : ${categories}" th:value="${item}" th:text="${item}"></option></select></label>
+    <label>Monthly Amount (₹)<input type="number" th:field="*{amount}" min="0.01" step="0.01" required></label><button>Add Recurring Expense</button>
+</form>
+<div class="table-box recurring-table"><table><thead><tr><th>Category</th><th>Monthly Amount</th><th>Action</th></tr></thead><tbody><tr th:each="item : ${recurringExpenses}"><td th:text="${item.category}"></td><td th:text="'₹' + ${item.amount}"></td><td><form th:action="@{/recurring/{id}/delete(id=${item.id})}" method="post"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="delete">Delete</button></form></td></tr><tr th:if="${#lists.isEmpty(recurringExpenses)}"><td colspan="3" class="no-data">No recurring expenses added.</td></tr></tbody></table></div>
+</main></body></html>

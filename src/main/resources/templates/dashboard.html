@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Student Budget</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body>
+<header><h1>Student Budget Management</h1><div th:replace="~{fragments :: nav}"></div></header>
+<main>
+    <form class="month-picker" method="get"><label>View month <input type="month" name="month" th:value="${month}"></label><button>View</button></form>
+    <p class="subtitle" th:text="'Budget overview for ' + ${month}"></p>
+    <section class="cards">
+        <article class="card"><p>Total Budget</p><h2 th:text="'₹' + ${budget}">₹0</h2></article>
+        <article class="card"><p>Total Spent</p><h2 class="red" th:text="'₹' + ${spent}">₹0</h2></article>
+        <article class="card"><p>Remaining Balance</p><h2 class="green" th:text="'₹' + ${remaining}">₹0</h2></article>
+    </section>
+    <p class="small-note" th:if="${recurringSpent > 0}" th:text="'Total spent includes ₹' + ${recurringSpent} + ' of recurring expenses.'"></p>
+    <section class="daily-card" th:if="${daysLeft > 0}"><strong th:text="'You can safely spend ₹' + ${dailyLimit} + ' per day for the next ' + ${daysLeft} + ' day(s).'">Daily limit</strong></section>
+    <section class="two-column" th:if="${remaining > 0}">
+        <article class="empty-card"><h3>If I spend now</h3><p>Enter an amount. This is only a prediction; it will not be saved.</p>
+            <label class="calculator-label">Amount (₹)<input id="spendInput" type="number" min="0" step="0.01" placeholder="500"></label>
+            <p>Remaining before: <strong th:text="'₹' + ${remaining}"></strong></p><p>Remaining after: <strong id="afterSpend">₹0</strong></p>
+        </article>
+        <article class="empty-card"><h3>Smart plan for your remaining balance</h3><p class="small-note">Based on recent activity. You can change these choices yourself.</p>
+            <ul><li th:each="message : ${smartPlan.messages}" th:text="${message}"></li></ul>
+            <p th:if="${smartPlan.travelAmount > 0}" th:text="'Travel / outing limit: ₹' + ${smartPlan.travelAmount}"></p>
+            <p th:if="${smartPlan.clothesAmount > 0}" th:text="'Clothes limit: ₹' + ${smartPlan.clothesAmount}"></p>
+            <p th:text="'Keep for savings / emergency: ₹' + ${smartPlan.saveAmount}"></p>
+        </article>
+    </section>
+    <section class="investment-card" th:if="${remaining > 0}"><h3>5% investment starter plan</h3>
+        <p th:text="'5% of your current remaining balance is ₹' + ${smartPlan.investmentAmount} + '.'"></p>
+        <p>Only invest this after essential expenses and an emergency buffer. It is an educational allocation, not a promise of profit or a specific investment recommendation.</p>
+        <a href="https://investor.sebi.gov.in/investment-thingsbeforeinv.html" target="_blank" rel="noopener">Learn about investment risk from SEBI</a>
+    </section>
+    <section class="empty-card" th:if="${budget == 0}"><h3>Set your monthly budget</h3><p>Start by adding the amount you want to manage this month.</p><a class="button" th:href="@{/budget(month=${month})}">Set Budget</a></section>
+</main><script th:inline="javascript">window.remainingBalance = /*[[${remaining}]]*/ 0;</script><script th:src="@{/js/app.js}"></script>
+</body></html>
